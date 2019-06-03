@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "../static",
+      "addressable": true
+    },
+    {
+      "path": "../dist",
+      "addressable": true
+    }
+  ]
+}

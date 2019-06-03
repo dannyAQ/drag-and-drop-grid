@@ -1,0 +1,18 @@
+#root {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    background-color: white;
+}
+
+.sample-button {
+    min-width: 80px;
+}
+
+.sample-button-left-margin {
+    margin-left: 16px;
+}
+
+.external-content.flex-column.relative {
+    width: 100%;
+}

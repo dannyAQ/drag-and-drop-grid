@@ -1,0 +1,15 @@
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.12.0'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm ci
+  displayName: 'Install dependencies'
+  workingDirectory: src/SAFe.Extension
+
+- script: |
+    npm run build
+  displayName: 'Compile and package'
+  workingDirectory: src/SAFe.Extension

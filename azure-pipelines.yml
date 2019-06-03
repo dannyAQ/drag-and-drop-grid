@@ -1,0 +1,15 @@
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+  major: 0
+  minor: 0
+
+name: $(major).$(minor)$(rev:.r)
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - template: azure-pipelines-ci.yml
+  

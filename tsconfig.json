@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "charset": "utf8",
+        "experimentalDecorators": true,
+        "module": "amd",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "noImplicitThis": true,
+        "strict": true,
+        "target": "es5",
+        "downlevelIteration": true,
+        "rootDir": "src/",
+        "outDir": "dist/",
+        "jsx": "react",
+        "lib": [
+          "es5",
+          "es6",
+          "es7",
+          "dom",
+          "esnext.array",
+          "es2015.promise"
+        ],
+        "types": [
+            "react"
+        ]
+    }
+}

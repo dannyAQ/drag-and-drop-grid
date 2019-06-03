@@ -1,0 +1,28 @@
+{
+    "manifestVersion": 1,
+    "id": "devops-extension-safe",
+    "publisher": "solidify-labs",
+    "version": "0.0.28",
+    "name": "SAFe for Azure DevOps",
+    "description": "SAFe tooling for Azure DevOps",
+    "categories": [
+        "Azure Boards"
+    ],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "icons": {
+        "default": "logo.png"
+    },
+    "scopes": [
+        "vso.work",
+        "vso.project"
+    ],
+        "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    }
+}

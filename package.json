@@ -1,0 +1,62 @@
+{
+  "name": "azure-devops-extension-sample",
+  "version": "1.0.3",
+  "description": "Sample Azure DevOps web extension",
+  "keywords": [
+    "extensions",
+    "Azure DevOps",
+    "Visual Studio Team Services"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/azure-devops-extension-sample.git"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "compile": "npm run clean && webpack --env=prod --mode production",
+    "compile:dev": "webpack-dev-server --hot --inline --env=dev --progress --profile --colors --mode development",
+    "build": "npm run compile",
+    "build:dev": "npm run compile:dev",
+    "postbuild": "npm run package-extension:prod -- --rev-version",
+    "package:dev": "npm run package-extension:dev -- --rev-version",
+    "package-extension:dev": "tfx extension create --overrides-file manifests/dev.json --manifest-globs azure-devops-extension.json src/Pages/**/*.json",
+    "package-extension:prod": "tfx extension create --overrides-file manifests/prod.json --manifest-globs azure-devops-extension.json src/Pages/**/*.json",
+    "publish-extension": "tfx extension publish --manifest-globs azure-devops-extension.json src/Pages/**/*.json"
+  },
+  "dependencies": {
+    "@types/react-grid-layout": "^0.16.7",
+    "@types/stripe-v3": "^3.1.0",
+    "azure-devops-extension-api": "~1.143.0",
+    "azure-devops-extension-sdk": "~2.0.3",
+    "azure-devops-ui": "~1.143.0",
+    "chart.js": "^2.7.3",
+    "chartjs-plugin-annotation": "^0.5.7",
+    "office-ui-fabric-react": "^6.111.1",
+    "react": "~16.6.3",
+    "react-chartjs-2": "^2.7.4",
+    "react-dom": "~16.6.3",
+    "react-grid-layout": "^0.16.6",
+    "react-stripe-elements": "^3.0.0",
+    "vss-web-extension-sdk": "^5.141.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.6.0",
+    "@types/react-dom": "^16.0.7",
+    "base64-inline-loader": "^1.1.1",
+    "copy-webpack-plugin": "^4.5.4",
+    "css-loader": "~1.0.0",
+    "file-loader": "~2.0.0",
+    "node-sass": "^4.12.0",
+    "rimraf": "~2.6.2",
+    "sass-loader": "~7.1.0",
+    "style-loader": "~0.23.1",
+    "tfx-cli": "^0.6.3",
+    "ts-loader": "~5.2.2",
+    "typescript": "^3.2",
+    "webpack": "^4.22.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-merge": "^4.1.4"
+  }
+}
