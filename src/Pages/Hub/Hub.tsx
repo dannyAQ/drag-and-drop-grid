@@ -35,6 +35,11 @@ class Board extends React.Component<{}, IGridState> {
     items: initialItems,
   };
 
+  public async componentDidMount() {
+    const initation = await SDK.init();
+    console.log(initation); 
+  }
+
   createGridLayout = (): IGridItemLayout[] => {
     const { items } = this.state;
     return items.map((item, i) => {

@@ -13,6 +13,7 @@
     "url": "https://github.com/Microsoft/azure-devops-extension-sample.git"
   },
   "scripts": {
+    "dev": "npm run compile && npm run compile:dev",
     "clean": "rimraf ./dist",
     "compile": "npm run clean && webpack --env=prod --mode production",
     "compile:dev": "webpack-dev-server --hot --inline --env=dev --progress --profile --colors --mode development",
