@@ -1,4 +1,4 @@
-import { IReducerAction } from "./IReducerAction";
+import { IReducerAction } from "./reducer";
 import { IDependencyBoardItem } from "./IDependencyBoardState";
 
 
@@ -19,12 +19,24 @@ export function createDependency(id: number, dependsOn: number): IReducerAction 
     };
 }
 
-export function changeStatus(id: number, newStatus: number): IReducerAction {
+export function changeIteration(id: number, newIteration: number, team: string): IReducerAction {
     return {
-        type: "change-status", 
+        type: "change-iteration", 
         payload: {
             id, 
-            newStatus
+            newIteration, 
+            team
+        }
+    }
+}
+
+export function changeTeam(id: number, newTeam: string): IReducerAction {
+
+    return {
+        type: 'change-team', 
+        payload: {
+            id,
+            newTeam
         }
     }
 }

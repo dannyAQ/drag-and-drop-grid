@@ -1,58 +1,67 @@
 import * as React from 'react'; 
- import { IReducerAction } from './IReducerAction'; 
-import { IDependencyBoardItem } from './IDependencyBoardState';
-import { Item } from './BoardItem'; 
-import { BoardColumn } from './BoardColumn'; 
-import { dependencyBoardReducer, initialState} from './dependencyBoardReducer';
-import { buildDependencyBoard } from './DependencyBoardActions';
-import { Card } from 'azure-devops-ui/Card';
-import './Hub.scss'; 
+ import {useDependencyBoardState} from './state/useDependencyBoardState'; 
+import {IDependencyBoardItem} from './state/IDependencyBoardState';
+import {Row} from './DependencyBoardRow'; 
+import {Cell} from './DependencyBoardCell';
+import {Item} from './DependencyBoardItem';
+import {DependencyBoardConnector} from './DependencyBoardConnector'; 
+
+const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) => ({
+    id: i, 
+    name: `Item ${i}`, 
+    iteration: Math.floor(Math.random() * 2),
+    text: lorem,
+    depends_on: [],
+    belongs_to_team: `Team ${i % 2 ? 0 : 1}`
+}));
 
 export function DependencyBoard() {
- 
-    const [{allItems, boardColumns}, dispatch] = React.useReducer( 
-        dependencyBoardReducer, 
-        {allItems: initialState, boardColumns: {}}
-    ); 
- 
+
+    const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
 
     React.useEffect(() => {
-        // rebuild dependency board everytime items are changed 
-        dispatch(buildDependencyBoard(allItems));
-    },[allItems]); 
-
-    const renderItem = (item) => {
-         return (
-            <Item 
-                item={item} 
-                dispatch={dispatch}
-            />
-        );
-    };
+        dispatch({type: 'set-items', payload: initialState});
+    },[]);
+ 
+    const board = dependencyBoardItems.reduce((all: any, next: any) => {
+        const toReturn = {...all}; 
+        if(toReturn[next.belongs_to_team]) 
+            toReturn[next.belongs_to_team] = [...toReturn[next.belongs_to_team], next]; 
+         else 
+            toReturn[next.belongs_to_team] = [next]; 
+        
+        return toReturn
+    },{});
     
-    const renderColsWithItems = () => {
-        const numberOfCols = Object.keys(boardColumns).length; 
-            return Object.keys(boardColumns).map(col => (
-                <BoardColumn 
-                    key={col}
-                    column={parseInt(col)} 
-                    totalNumberOfCols={numberOfCols} 
-                    dispatch={dispatch}
-                >
-                    {boardColumns[col].map(item => renderItem(item))}                    
-                </BoardColumn>
-            ));
-    }
-
-
-
-    return (
-        <section className="dependency-board">
-            {renderColsWithItems()}
-
-            <svg id="svg-root" width="100%" height="100%" style={{position: 'absolute', top: 0, left: 0}}>
-            </svg>
-        </section>
-     ) 
-
+    return <Board board={board}/>
 }
+
+export function Board({board}) {
+    const iterations = new Array(4).fill(0).map((_,i) => i); 
+     return (
+        <div style={{display: 'grid', position: 'relative'}}>
+            <DependencyBoardConnector/>
+            {Object.keys(board).map((team,i) => {
+                return(
+                    <Row team={team} key={team}>
+                        {iterations.map(it => {
+                            return (
+                            <Cell iteration={it} team={team}>
+                                <span style={{position: 'absolute', top: -25, left: 5}}>
+                                Iteration {it}
+                                </span>
+                                {board[team].map(item => (
+                                    it === item.iteration ? <Item item={item}/> : null 
+                                ))}
+                            </Cell>
+                            )
+                        })}
+                    </Row>
+                )
+            })}
+        </div>
+    )
+}
+
+ 
