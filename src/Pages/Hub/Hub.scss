@@ -12,4 +12,21 @@
 
 svg {
   pointer-events: none; 
+  position: relative;
+
+  circle {
+    pointer-events: auto; 
+    z-index: 2;
+  }
+  
+  &:hover circle::after {
+      content: "";
+ 
+      background: green; 
+      width: 20px;
+      height: 20px;
+    }
+ 
 }
+
+ 

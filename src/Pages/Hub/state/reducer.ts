@@ -26,8 +26,8 @@ export function reducer(state, action: IReducerAction) {
                     }
                 }
                 return item; 
-            })
-
+            }); 
+            
             return items;
         }
 
@@ -35,7 +35,7 @@ export function reducer(state, action: IReducerAction) {
             const { id, newTeam } = payload; 
             const items = state.map(item => {
                 if(item.id === id) {
-                    item.belongs_to_team = newTeam; 
+                    item.team_id = newTeam; 
                 }
                 return item; 
             }); 
@@ -47,16 +47,15 @@ export function reducer(state, action: IReducerAction) {
              const items = state.map(item => {
                 if(item.id === id) {
                      item.iteration = newIteration; 
-                    if(team !== item.belongs_to_team) {
-                        item.belongs_to_team = team; 
+                    if(team !== item.team_id) {
+                        item.team_id = team; 
                     }
                 }
                 return item; 
             });
             return items;
          }
-
-
+         
         default: 
             return state; 
     }

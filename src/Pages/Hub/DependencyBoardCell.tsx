@@ -20,7 +20,7 @@ export function Cell({children, iteration, team}) {
             isOver: monitor.isOver({shallow: true})
         }), 
         drop(dropped: any) {
-            if(isOver) {
+             if(isOver) {
                 const action = changeIteration(dropped.id, iteration, team); 
                 dispatch(action); 
             }
@@ -28,7 +28,11 @@ export function Cell({children, iteration, team}) {
     });
 
     return (
-        <div ref={drop} style={{...styles, background: isOver ? 'lightgreen' : '#f8f8f8', position: 'relative'}}>
+        <div ref={drop} 
+            style={{
+                ...styles, 
+                background: isOver ? '#dedede': '#f8f8f8', 
+                position: 'relative'}}>
             {children}
         </div>
     )

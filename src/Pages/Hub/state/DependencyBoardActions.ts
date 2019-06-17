@@ -19,7 +19,7 @@ export function createDependency(id: number, dependsOn: number): IReducerAction 
     };
 }
 
-export function changeIteration(id: number, newIteration: number, team: string): IReducerAction {
+export function changeIteration(id: number, newIteration: number, team: number): IReducerAction {
     return {
         type: "change-iteration", 
         payload: {
@@ -30,13 +30,24 @@ export function changeIteration(id: number, newIteration: number, team: string):
     }
 }
 
-export function changeTeam(id: number, newTeam: string): IReducerAction {
-
+export function changeTeam(id: number, newTeam: number): IReducerAction {
     return {
         type: 'change-team', 
         payload: {
             id,
             newTeam
         }
-    }
+    };
+}
+
+
+export function moveItem(id: number, team: number, iteration: number): IReducerAction {
+    return {
+        type: 'move-item', 
+        payload: {
+            id,
+            team,
+            iteration
+        }
+    };
 }

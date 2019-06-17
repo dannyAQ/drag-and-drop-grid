@@ -9,5 +9,6 @@ export interface IDependencyBoardState {
     iteration: number;  
     depends_on: number[];
     text: string; 
-    belongs_to_team: string; 
+    belongs_to_team: string;
+    team_id: number; 
  }

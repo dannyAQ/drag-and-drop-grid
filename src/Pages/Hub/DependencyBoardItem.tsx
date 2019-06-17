@@ -8,14 +8,18 @@ export function Item({item}) {
 
     const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
 
-    const [p, drag] = useDrag({
-        item: { type: 'item', id: item.id }, 
+    const [{isDragging}, drag] = useDrag({
+        item: { type: 'item', id: item.id },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging()
+        }),
     });
+    console.log(isDragging)
 
     const [{isOver}, drop] = useDrop({
         accept: 'item', 
         collect: (monitor) => ({
-            isOver: monitor.isOver({shallow: true})
+            isOver: monitor.isOver({shallow: true}),
         }),
         drop(dropped: any, monitor) {
             if(isOver) {
@@ -25,11 +29,20 @@ export function Item({item}) {
     })
 
     return (
-        <div ref={drop} id={`board-item-${item.id}`} className="dependency-board-item" style={{zIndex: 0}}>
-            <div ref={drag} style={{background: isOver ? 'transparent' || '#c7e0f4' : 'white', margin: '10px 0'}}>
+        <div 
+            ref={drop} 
+            id={`board-item-${item.id}`} 
+            className="dependency-board-item" 
+            style={{
+                background: isDragging ? 'black' : 'white'}}>
+            <div 
+                ref={drag} 
+                style={{
+                    background: isOver ? '#eff6fc' : 'white', 
+                    margin: '20px 0'}}>
                 <Card titleProps={{text: item.name}}>
                     <div>
-                        {item.belongs_to_team}<br/>
+                        Team {item.team_id}<br/>
                         Iteration: {item.iteration}<br/>
                         {item.text} 
                         <br/>

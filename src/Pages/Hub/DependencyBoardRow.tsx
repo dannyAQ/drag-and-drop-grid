@@ -1,9 +1,9 @@
 import * as React from 'react'; 
 import {useDependencyBoardState} from './state/useDependencyBoardState';
-import {changeTeam} from './state/DependencyBoardActions'; 
+import {changeTeam, moveItem} from './state/DependencyBoardActions'; 
 import {useDrop} from 'react-dnd';
 
-export function Row({children, team}) {
+export function Row({children, team, items}) {
 
     const {dispatch} = useDependencyBoardState(); 
 
@@ -32,10 +32,9 @@ export function Row({children, team}) {
         }
     });
 
-
     return (
-        <div ref={drop} style={{...styles, background: isOver ? 'lightgray' : 'transparent', position: "relative"}}>
-            <div style={{position: 'absolute', top: '50%', left: 0, transform: 'rotate(90deg)'}}>{team}</div>
+        <div ref={drop} style={{...styles, position: "relative"}}>
+            <div style={{position: 'absolute', top: '50%', left: 0, transform: 'rotate(90deg)'}}>Team {team}</div>
             {children}
         </div>
     )
