@@ -13,22 +13,25 @@ export function DependencyBoardConnector() {
     const [dependencyVectors, setDependencyVectors] = React.useState<IVec[]>([])
   
     const collectDependencyVectors = () => {
-          const vecs = dependencies.map(([id, dependsOn]) => {        
+          const vecs = dependencies.map(([id, dependsOn]) => { 
+              const OFFSET_X = window.pageXOffset;  
+              const OFFSET_Y = window.pageYOffset;        
+      
               const $el = document.getElementById(`board-item-${id}`);
               const fromBbox = $el.getBoundingClientRect(); 
               const deps = dependsOn.map(i => {
                     const $dependsOn = document.getElementById(`board-item-${i}`);
                     const toBbox = $dependsOn.getBoundingClientRect(); 
                     return {
-                        x: toBbox.left, 
-                        y: toBbox.top, 
+                        x: toBbox.left + OFFSET_X, 
+                        y: toBbox.top + OFFSET_Y, 
                         width: toBbox.width, 
                         height: toBbox.height
                     };
                 });
             return {
-                x: fromBbox.left, 
-                y: fromBbox.top,
+                x: fromBbox.left + OFFSET_X, 
+                y: fromBbox.top + OFFSET_Y,
                 height: fromBbox.height, 
                 width: fromBbox.width, 
                 deps, 
@@ -36,6 +39,10 @@ export function DependencyBoardConnector() {
             }; 
         });
       setDependencyVectors(vecs); 
+    }
+
+    const findClosestSide = () => {
+        
     }
 
     const renderDependencyVectors = () => {
@@ -97,7 +104,6 @@ export function DependencyBoardConnector() {
     
     React.useEffect(() => {
         collectDependencyVectors();
-
         window.addEventListener('resize', collectDependencyVectors); 
         return () => window.removeEventListener('resize', collectDependencyVectors); 
     },[dependencies]);
@@ -107,8 +113,7 @@ export function DependencyBoardConnector() {
         <svg 
             width="100%" 
             height="100%" 
-            style={{position: 'absolute', top: 0, left: 0, zIndex: 1}}
-        >
+            style={{position: 'absolute', top: 0, left: 0, zIndex: 1}}>
             {renderDependencyVectors()}
         </svg>
     )

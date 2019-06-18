@@ -1,28 +1,31 @@
 import * as React from 'react'; 
- import {useDependencyBoardState} from './state/useDependencyBoardState'; 
+import {useDependencyBoardState} from './state/useDependencyBoardState'; 
 import {IDependencyBoardItem} from './state/IDependencyBoardState';
 import {Row} from './DependencyBoardRow'; 
 import {Cell} from './DependencyBoardCell';
 import {Item} from './DependencyBoardItem';
 import {DependencyBoardConnector} from './DependencyBoardConnector'; 
+import {setItems} from './state/DependencyBoardActions'; 
 
 const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) => ({
-    id: i, 
-    name: `Item ${i}`, 
-    iteration: Math.floor(Math.random() * 2),
-    text: lorem,
-    depends_on: [],
-    belongs_to_team: `Team ${i % 2 ? 0 : 1}`,
-    team_id: i % 2 ? 0 : 1
-}));
+const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) => {
+      return {
+        id: i, 
+        name: `Item ${i}`, 
+        iteration: Math.floor(Math.random() * 2),
+        text: lorem,
+        depends_on: [],
+        belongs_to_team: `Team ${i % 2 ? 0 : 1}`,
+        team_id: i % 2 ? 0 : 1
+    };
+});
 
 export function DependencyBoard() {
 
     const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
 
     React.useEffect(() => {
-        dispatch({type: 'set-items', payload: initialState});
+        dispatch(setItems(initialState));
     },[]);
 
     const board = []; 
@@ -46,13 +49,14 @@ export function Board({board}) {
             <DependencyBoardConnector/>
             {board.map((row, i) => {
                 return (
-                    <Row team={row[0].team_id} key={i} items={row}>
+                    <Row key={i}>
+                        {/* <div style={{position: 'absolute', top: '50%', left: 0, transform: 'rotate(90deg)'}}>Team {row[0].team_id}</div> */}
                         {iterations.map(it => {
-                            return (
+                             return (
                                 <Cell iteration={it} team={row[0].team_id}>
-                                    <span style={{position: 'absolute', top: -25, left: 5}}>
-                                        Iteration {it}
-                                    </span>
+                                    <h3 style={{position: 'absolute', top: 15, left: 15, margin: 0}}>
+                                         Iteration {it}
+                                     </h3>
                                     {row.map(item => (
                                         it === item.iteration ? <Item item={item}/> : null 
                                     ))}

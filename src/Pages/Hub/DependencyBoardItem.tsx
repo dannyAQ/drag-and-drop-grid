@@ -14,8 +14,7 @@ export function Item({item}) {
             isDragging: monitor.isDragging()
         }),
     });
-    console.log(isDragging)
-
+ 
     const [{isOver}, drop] = useDrop({
         accept: 'item', 
         collect: (monitor) => ({

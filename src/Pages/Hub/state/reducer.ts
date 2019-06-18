@@ -4,7 +4,7 @@ export interface IReducerAction {
 }
 
 export function reducer(state, action: IReducerAction) {
-    const { type, payload } = action; 
+    const {type, payload} = action; 
     switch(type) {
         
         case "set-items": {
@@ -12,7 +12,7 @@ export function reducer(state, action: IReducerAction) {
         }
 
         case "create-dependency": {
-            const { id, dependsOn } = payload; 
+            const {id, dependsOn} = payload; 
             
             if(id === dependsOn) {
                 return state; 
@@ -31,29 +31,20 @@ export function reducer(state, action: IReducerAction) {
             return items;
         }
 
-        case "change-team": {
-            const { id, newTeam } = payload; 
-            const items = state.map(item => {
-                if(item.id === id) {
-                    item.team_id = newTeam; 
-                }
-                return item; 
-            }); 
-            return items;
-        }
-        
-        case "change-iteration": {
-            const { id, newIteration, team } = payload; 
+         case "move-item": {
+             const {id, iteration, team} = payload;
              const items = state.map(item => {
-                if(item.id === id) {
-                     item.iteration = newIteration; 
-                    if(team !== item.team_id) {
-                        item.team_id = team; 
-                    }
-                }
-                return item; 
-            });
-            return items;
+                 if(item.id === id) {
+                    item = {
+                         ...item, 
+                         iteration, 
+                         belongs_to_team: `Team ${team}`,
+                         team_id: team
+                    };
+                  }
+                 return item; 
+             }); 
+             return items; 
          }
          
         default: 

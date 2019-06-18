@@ -1,17 +1,18 @@
 import * as React from 'react'; 
 import { useDependencyBoardState} from './state/useDependencyBoardState';
-import {changeIteration} from './state/DependencyBoardActions'; 
+import {moveItem} from './state/DependencyBoardActions'; 
 import {useDrop} from 'react-dnd';
 
 export function Cell({children, iteration, team}) {
 
-    const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
+    const {dispatch} = useDependencyBoardState(); 
     
     const styles = {
         padding: 10, 
         minWidth: 300,
         margin: "0 5px",
         minHeight: 100,
+        paddingTop: 30
     }
 
     const [{isOver}, drop] = useDrop({
@@ -21,8 +22,7 @@ export function Cell({children, iteration, team}) {
         }), 
         drop(dropped: any) {
              if(isOver) {
-                const action = changeIteration(dropped.id, iteration, team); 
-                dispatch(action); 
+                 dispatch(moveItem(dropped.id, team, iteration)); 
             }
          }
     });
