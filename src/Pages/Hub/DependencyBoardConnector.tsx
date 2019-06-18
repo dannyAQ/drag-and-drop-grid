@@ -8,6 +8,36 @@ interface IVec {
     toY: number;  
 }
 
+// calculates the closest side from one box to another
+const findClosestSidesBetween = (ourVector, theirVector) => {
+    const coords = {fromX: null, fromY: null, toX: null, toY: null};
+    if(ourVector.x === theirVector.x) {
+        // ours is over
+        if(ourVector.y > theirVector.y) {
+            coords.fromX = ourVector.x; 
+            coords.fromY = ourVector.y; 
+            coords.toX = theirVector.x; 
+            coords.toY = theirVector.y; 
+        } else { // ours is below 
+            coords.fromX = ourVector.x; 
+            coords.fromY = ourVector.y; 
+            coords.toX = theirVector.x; 
+            coords.toY = theirVector.y; 
+        }
+    } else if(ourVector.x < theirVector.x) {
+        coords.fromX = ourVector.x + ourVector.width; 
+        coords.fromY = ourVector.y; 
+        coords.toX = theirVector.x; 
+        coords.toY = theirVector.y; 
+    } else {
+        coords.fromX = ourVector.x; 
+        coords.fromY = ourVector.y; 
+        coords.toX = theirVector.x + theirVector.width; 
+        coords.toY = theirVector.y; 
+    }
+    return coords; 
+}
+
 export function DependencyBoardConnector() {
     const dependencies = useItemDependencies(); 
     const [dependencyVectors, setDependencyVectors] = React.useState<IVec[]>([])
@@ -41,51 +71,13 @@ export function DependencyBoardConnector() {
       setDependencyVectors(vecs); 
     }
 
-    const findClosestSide = () => {
-        
-    }
-
     const renderDependencyVectors = () => {
-        return dependencyVectors.map((deps: any, i) => {
+        return dependencyVectors.map((item: any, i) => {
              return  (
-                deps.deps.map(vec => {
-                    const ourX = vec.x, 
-                          ourY = vec.y,
-                          ourWidth = vec.width, 
-                          ourHeight = vec.height, 
-                          theirX = deps.x, 
-                          theirY = deps.y, 
-                          theirHeight = deps.height, 
-                          theirWidth = deps.width; 
-                    let coords = {fromX: null, fromY: null, toX: null, toY: null};
-
-                    if(ourX === theirX) {
-                        // ours is over
-                        if(ourY > theirY) {
-                            coords.fromX = ourX; 
-                            coords.fromY = ourY; 
-                            coords.toX = theirX; 
-                            coords.toY = theirY; 
-                        } else { // ours is below 
-                            coords.fromX = ourX; 
-                            coords.fromY = ourY; 
-                            coords.toX = theirX; 
-                            coords.toY = theirY; 
-                        }
-                    } else if(ourX < theirX) {
-                        coords.fromX = ourX + ourWidth; 
-                        coords.fromY = ourY; 
-                        coords.toX = theirX; 
-                        coords.toY = theirY; 
-                    } else {
-                        coords.fromX = ourX; 
-                        coords.fromY = ourY; 
-                        coords.toX = theirX + theirWidth; 
-                        coords.toY = theirY; 
-                    }
-                      
+                item.deps.map(dependency => {
+                    const coords = findClosestSidesBetween(item, dependency);                   
                     return (
-                        <React.Fragment key={vec.id}>
+                        <React.Fragment key={dependency.id}>
                             <circle onClick={() => console.log('clicked')} cx={coords.fromX} cy={coords.fromY} r="7" fill="red"/>                
                             <line
                                 x1={coords.fromX} 

@@ -20,24 +20,25 @@ const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) =>
     };
 });
 
-export function DependencyBoard() {
-
-    const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
-
-    React.useEffect(() => {
-        dispatch(setItems(initialState));
-    },[]);
-
+// transforms a list of items to a table like array
+function makeRows(list, sortOnKey: string) {
     const board = []; 
-    let sorted = dependencyBoardItems.sort((a, b) => a.team_id - b.team_id); 
+    let sorted = list.sort((a, b) => a[sortOnKey] - b[sortOnKey]); 
     sorted.forEach((item, i) => {
-        const next = dependencyBoardItems[i + 1] ? dependencyBoardItems[i + 1] : {team_id: null}
-        if(item.team_id !== next.team_id) {
+        const next = list[i + 1] ? list[i + 1] : {[sortOnKey]: null}
+        if(item[sortOnKey] !== next[sortOnKey]) {
             const row = sorted.slice(0, i + 1); 
             board.push(row); 
             sorted = sorted.slice(i + 1, sorted.length); //remaining
         }
     });
+    return board; 
+}
+
+export function DependencyBoard() {
+    const {dependencyBoardItems, dispatch} = useDependencyBoardState(); 
+    React.useEffect(() => dispatch(setItems(initialState)), []);
+    const board = makeRows(dependencyBoardItems, 'team_id'); 
     return <Board board={board}/>
 }
 
@@ -53,12 +54,12 @@ export function Board({board}) {
                         {/* <div style={{position: 'absolute', top: '50%', left: 0, transform: 'rotate(90deg)'}}>Team {row[0].team_id}</div> */}
                         {iterations.map(it => {
                              return (
-                                <Cell iteration={it} team={row[0].team_id}>
+                                <Cell key={it} iteration={it} team={row[0].team_id}>
                                     <h3 style={{position: 'absolute', top: 15, left: 15, margin: 0}}>
                                          Iteration {it}
                                      </h3>
                                     {row.map(item => (
-                                        it === item.iteration ? <Item item={item}/> : null 
+                                        it === item.iteration ? <Item key={item.id} item={item}/> : null 
                                     ))}
                                 </Cell>
                             );
