@@ -8,10 +8,10 @@ export function Cell({children, iteration, team}) {
     const {dispatch} = useDependencyBoardState(); 
     
     const styles = {
-        padding: 10, 
         minWidth: 300,
-        margin: "0 5px",
         minHeight: 100,
+        padding: 10, 
+        margin: "0 5px",
         paddingTop: 30
     }
 
@@ -31,7 +31,7 @@ export function Cell({children, iteration, team}) {
         <div ref={drop} 
             style={{
                 ...styles, 
-                background: isOver ? '#dedede': '#f8f8f8', 
+                background: isOver ? '#f4f4f4': '#f8f8f8', 
                 position: 'relative'}}>
             {children}
         </div>

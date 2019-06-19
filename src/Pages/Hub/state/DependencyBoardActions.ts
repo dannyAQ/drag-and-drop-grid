@@ -19,6 +19,16 @@ export function createDependency(id: number, dependsOn: number): IReducerAction 
     };
 }
 
+export function removeDependency(id: number, dependencyToRemove: number): IReducerAction {
+    return {
+        type: "remove-dependency",
+         payload: {
+            id, 
+            dependencyToRemove
+        }
+    }
+}
+
 export function moveItem(id: number, team: number, iteration: number): IReducerAction {
     return {
         type: 'move-item', 

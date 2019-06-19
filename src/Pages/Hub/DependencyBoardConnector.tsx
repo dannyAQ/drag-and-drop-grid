@@ -1,5 +1,7 @@
 import * as React from 'react'; 
 import {useItemDependencies} from './useItemDependencies'; 
+import {removeDependency} from './state/DependencyBoardActions'; 
+import { useDependencyBoardState } from './state/useDependencyBoardState';
 
 interface IVec {
     fromX: number; 
@@ -13,16 +15,16 @@ const findClosestSidesBetween = (ourVector, theirVector) => {
     const coords = {fromX: null, fromY: null, toX: null, toY: null};
     if(ourVector.x === theirVector.x) {
         // ours is over
-        if(ourVector.y > theirVector.y) {
-            coords.fromX = ourVector.x; 
-            coords.fromY = ourVector.y; 
-            coords.toX = theirVector.x; 
-            coords.toY = theirVector.y; 
+        if(ourVector.y < theirVector.y) {
+            coords.fromX = ourVector.x + ourVector.width / 2; 
+            coords.fromY = ourVector.y + ourVector.height / 2; 
+            coords.toX = theirVector.x + theirVector.width / 2; 
+            coords.toY = theirVector.y - theirVector.height / 2 + 5; 
         } else { // ours is below 
-            coords.fromX = ourVector.x; 
-            coords.fromY = ourVector.y; 
-            coords.toX = theirVector.x; 
-            coords.toY = theirVector.y; 
+            coords.fromX = ourVector.x + ourVector.width / 2; 
+            coords.fromY = ourVector.y - ourVector.height / 2 + 5; 
+            coords.toX = theirVector.x + theirVector.width / 2; 
+            coords.toY = theirVector.y + theirVector.height / 2; 
         }
     } else if(ourVector.x < theirVector.x) {
         coords.fromX = ourVector.x + ourVector.width; 
@@ -39,6 +41,7 @@ const findClosestSidesBetween = (ourVector, theirVector) => {
 }
 
 export function DependencyBoardConnector() {
+    const {dispatch} = useDependencyBoardState(); 
     const dependencies = useItemDependencies(); 
     const [dependencyVectors, setDependencyVectors] = React.useState<IVec[]>([])
   
@@ -54,14 +57,15 @@ export function DependencyBoardConnector() {
                     const toBbox = $dependsOn.getBoundingClientRect(); 
                     return {
                         x: toBbox.left + OFFSET_X, 
-                        y: toBbox.top + OFFSET_Y, 
+                        y: toBbox.top + OFFSET_Y - toBbox.height / 2, 
                         width: toBbox.width, 
-                        height: toBbox.height
+                        height: toBbox.height, 
+                        id: i
                     };
                 });
             return {
                 x: fromBbox.left + OFFSET_X, 
-                y: fromBbox.top + OFFSET_Y,
+                y: fromBbox.top + OFFSET_Y - fromBbox.height / 2,
                 height: fromBbox.height, 
                 width: fromBbox.width, 
                 deps, 
@@ -78,14 +82,14 @@ export function DependencyBoardConnector() {
                     const coords = findClosestSidesBetween(item, dependency);                   
                     return (
                         <React.Fragment key={dependency.id}>
-                            <circle onClick={() => console.log('clicked')} cx={coords.fromX} cy={coords.fromY} r="7" fill="red"/>                
+                            <circle onClick={() => dispatch(removeDependency(item.id, dependency.id))} cx={coords.fromX} cy={coords.fromY} r="7" fill="red"/>                
                             <line
                                 x1={coords.fromX} 
                                 y1={coords.fromY} 
                                 x2={`${coords.toX}`} 
                                 y2={coords.toY} 
                                 style={{stroke: "rgb(255,0,0)", strokeWidth: 2, width: 20}} />
-                            <circle onClick={() => console.log('clicked')} cx={coords.toX} cy={coords.toY} r="7" fill="red"/>
+                            {/* <circle onClick={() => console.log('clicked')} cx={coords.toX} cy={coords.toY} r="7" fill="red"/> */}
                         </React.Fragment>
                     )
                 })

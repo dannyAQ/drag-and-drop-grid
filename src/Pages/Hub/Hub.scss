@@ -2,12 +2,28 @@
 @import "/node_modules/react-grid-layout/css/styles.css";
 @import "/node_modules/react-resizable/css/styles.css";
 
-.dependency-board {
-  position: relative;
-  display: flex; 
-  height: 90%;
-  width: 700px; 
-  margin: 10px; 
+.item-card {
+  border: 1px solid lightgray; 
+  border-radius: 0; 
+  position: relative; 
+  padding: 5px 10px 10px 10px; 
+
+  .bolt-card-content {
+    padding-left: 0; 
+  }
+
+  &::before {
+    content: ""; 
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    
+    display: block;
+    height: 100%; 
+    width: 3px; 
+    background: green; 
+
+  }
 }
 
 svg {
@@ -17,16 +33,12 @@ svg {
   circle {
     pointer-events: auto; 
     z-index: 2;
+    cursor: pointer;
   }
-  
-  &:hover circle::after {
-      content: "";
- 
-      background: green; 
-      width: 20px;
-      height: 20px;
-    }
- 
 }
 
  
+.dependency-board-item--expanded {
+  width: 90%; 
+  height: 70vh; 
+}

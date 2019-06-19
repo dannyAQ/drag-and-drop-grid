@@ -11,12 +11,13 @@ const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) => {
       return {
         id: i, 
-        name: `Item ${i}`, 
+        title: `This is item ${i}`, 
         iteration: Math.floor(Math.random() * 2),
         text: lorem,
         depends_on: [],
         belongs_to_team: `Team ${i % 2 ? 0 : 1}`,
-        team_id: i % 2 ? 0 : 1
+        team_id: i % 2 ? 0 : 1,
+        state: 'Doing'
     };
 });
 

@@ -31,6 +31,17 @@ export function reducer(state, action: IReducerAction) {
             return items;
         }
 
+        case "remove-dependency": {
+            const {id, dependencyToRemove} = payload; 
+             const items = state.map(item => {
+                if(item.id === id && item.depends_on.length) {
+                    item.depends_on = item.depends_on.filter(d => d !== dependencyToRemove);
+                }
+                return item; 
+            });
+            return items; 
+        }
+
          case "move-item": {
              const {id, iteration, team} = payload;
              const items = state.map(item => {
