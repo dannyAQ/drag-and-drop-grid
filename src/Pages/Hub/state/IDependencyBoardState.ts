@@ -2,13 +2,7 @@ export interface IDependencyBoardState {
     items: IDependencyBoardItem[]; 
 }
 
-
-enum IItemStates {
-    TODO = "ToDo", 
-    DOING = "Doing", 
-    DONE = "Done"
-}
-
+ 
 export interface IDependencyBoardItem {
     id: number; 
     title: string; 
@@ -18,7 +12,7 @@ export interface IDependencyBoardItem {
     belongs_to_team: string;
     team_id: number;
     
-    state?: IItemStates; 
+    state?: string; 
     description?: string; 
 
  }

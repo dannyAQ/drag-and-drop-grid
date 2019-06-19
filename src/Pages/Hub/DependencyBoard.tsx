@@ -17,7 +17,7 @@ const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) =>
         depends_on: [],
         belongs_to_team: `Team ${i % 2 ? 0 : 1}`,
         team_id: i % 2 ? 0 : 1,
-        state: 'Doing'
+        state: "Doing"
     };
 });
 
