@@ -8,6 +8,8 @@ export function DependencyBoardStateProvider({children}) {
     
     const [dependencyBoardItems, dispatch] = React.useReducer(reducer, []); 
 
+
+    console.log(dependencyBoardItems, 'chjanged')
     return (
         <DependencyBoardContext.Provider value={{dependencyBoardItems, dispatch}}>
             {children}

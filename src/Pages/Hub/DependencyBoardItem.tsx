@@ -5,6 +5,7 @@ import {useDrop, useDrag} from 'react-dnd';
 import {Card} from 'azure-devops-ui/Card'; 
 import {Dialog} from 'azure-devops-ui/Dialog';
 
+ 
 export function Item({item}) {
 
     const {dispatch} = useDependencyBoardState(); 
@@ -27,45 +28,50 @@ export function Item({item}) {
                 dispatch(createDependency(dropped.id, item.id))
             }
         }
-    })
+    });
+    
+    // const [elementConnectorRef] = useElementConnector({
+    //     targets: item.depends_on
+    // }); 
 
     return (
-        <div 
-            ref={drop} 
-            id={`board-item-${item.id}`} 
-            className="dependency-board-item" 
-            style={{background: isDragging ? 'black' : 'white'}}>
+        <div id={`board-item-${item.id}`}>
             <div 
-                ref={drag} 
-                style={{
-                    background: isOver ? '#eff6fc' : 'white', 
-                    margin: '20px 0'}}>
-                <Card className="item-card" titleProps={{text: item.name}}>
-                    <div>
-                        <div onClick={() => setIsExpanded(true)}>
-                            <span style={{fontWeight: 'bold', marginRight: 5}}>
-                                {item.id}
-                            </span>
-                            <span>
-                                {item.title} 
-                            </span>
-                        </div>
-                        <div style={{marginTop: 10, fontSize: 13}}>
-                            <span style={{marginRight: 70, color: 'gray'}}>State</span>
-                             {item.state}
-                        </div>
+                ref={drop} 
+                className="dependency-board-item" 
+                style={{background: isDragging ? 'black' : 'white'}}>
+                <div 
+                    ref={drag} 
+                    style={{
+                        background: isOver ? '#eff6fc' : 'white', 
+                        margin: '20px 0'}}>
+                    <Card className="item-card" titleProps={{text: item.name}}>
+                        <div>
+                            <div onClick={() => setIsExpanded(true)}>
+                                <span style={{fontWeight: 'bold', marginRight: 5}}>
+                                    {item.id}
+                                </span>
+                                <span>
+                                    {item.title} 
+                                </span>
+                            </div>
+                            <div style={{marginTop: 10, fontSize: 13}}>
+                                <span style={{marginRight: 70, color: 'gray'}}>State</span>
+                                {item.state}
+                            </div>
 
-                        {isExpanded ? (
-                            <Dialog className="dependency-board-item--expanded" 
-                                    titleProps={{ text: item.title }}
-                                    escDismiss 
-                                    footerButtonProps={[]}
-                                    onDismiss={() => setIsExpanded(false)}>
-                                {item.text}
-                            </Dialog>
-                        ) : null}
-                    </div>
-                </Card>
+                            {isExpanded ? (
+                                <Dialog className="dependency-board-item--expanded" 
+                                titleProps={{ text: item.title }}
+                                escDismiss 
+                                footerButtonProps={[]}
+                                onDismiss={() => setIsExpanded(false)}>
+                                    {item.text}
+                                </Dialog>
+                            ) : null}
+                        </div>
+                    </Card>
+                </div>
             </div>
         </div>
     );

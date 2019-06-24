@@ -7,6 +7,8 @@ import {Item} from './DependencyBoardItem';
 import {DependencyBoardConnector} from './DependencyBoardConnector'; 
 import {setItems} from './state/DependencyBoardActions'; 
 
+import {ElementConnectorProvider} from './ElementConnector'; 
+
 const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 const initialState: IDependencyBoardItem[] = new Array(10).fill(0).map((_, i) => {
       return {
@@ -47,8 +49,8 @@ export function DependencyBoard() {
 export function Board({board}) {
     const iterations = new Array(4).fill(0).map((_,i) => i);   
        return (
-        <div style={{display: 'grid', position: 'relative'}}>
-            <DependencyBoardConnector/>
+        <div id="board-root" style={{display: 'grid', position: 'relative'}}>
+            <ElementConnectorProvider>
             {board.map((row, i) => {
                 return (
                     <Row key={i}>
@@ -68,6 +70,7 @@ export function Board({board}) {
                     </Row>
                 )
             })}
+            </ElementConnectorProvider>
         </div>
     );
 }
